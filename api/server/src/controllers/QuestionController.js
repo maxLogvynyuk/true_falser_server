@@ -1,6 +1,7 @@
 import parseInt from 'lodash/parseInt';
 import map from 'lodash/map';
 import split from 'lodash/split';
+import isBoolean from 'lodash/isBoolean';
 
 import Util from '../utils/Utils';
 import QuestionService from '../services/QuestionService';
@@ -44,7 +45,7 @@ class QuestionController {
       !request.body.text ||
       !request.body.highlightedText ||
       !request.body.LanguageId ||
-      !request.body.result
+      !isBoolean(request.body.result)
     ) {
       util.setError(400, 'Please provide complete details');
       return util.send(response);
