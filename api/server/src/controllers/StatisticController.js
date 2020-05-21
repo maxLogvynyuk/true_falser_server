@@ -27,6 +27,23 @@ class StatisticController {
     }
   };
 
+  static async getAllLanguageCorrectAnswersStatistic(request, response) {
+
+    try {
+      const allLanguagesStatistic = await LanguageService.getAllLanguagesCorrectAnswersStatistic();
+      console.info('allLanguagesStatistic!!!', allLanguagesStatistic);
+      if (!allLanguagesStatistic) {
+        util.setError(404, `Cannot generate list of correct answer statistic`);
+      } else {
+        util.setSuccess(200, 'All languages statistics', allLanguagesStatistic);
+      }
+      return util.send(response);
+    } catch (error) {
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
 }
 
 export default StatisticController;

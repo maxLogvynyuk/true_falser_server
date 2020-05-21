@@ -1,12 +1,23 @@
 import sequelize, { Op } from 'sequelize';
 import get from 'lodash/get';
+import map from 'lodash/map';
 
 import database from '../models';
+
+;
 
 class LanguageService {
 
   static async getAllLanguages() {
     return database.Language.findAll();
+  }
+
+  static async getAllLanguagesId() {
+    return database.Language.findAll({
+      attributes: {
+        exclude: ['name', 'createdAt', 'updatedAt']
+      }
+    });
   }
 
   static async createLanguage(newLanguage) {
@@ -45,9 +56,24 @@ class LanguageService {
     return {
       id,
       name: get(language, 'name'),
+      test: null,
       totalAnswers,
       correctAnswers,
     };
+  }
+
+  static async getAllLanguagesCorrectAnswersStatistic() {
+    const languages = await LanguageService.getAllLanguagesId();
+    async function getLanguageStatistic(language) {
+      console.info('language!!!!!', language.id);
+      const correctAnswerStatistic = await LanguageService.getRatioOfCorrectAnswerForLanguage(language.id);
+      console.info('correctAnswerStatistic!!', correctAnswerStatistic);
+      return correctAnswerStatistic;
+    }
+    const allLanguagesStatistic = map(
+      languages, async (language) => getLanguageStatistic(language)
+    );
+    return  Promise.all(allLanguagesStatistic);
   }
 }
 
