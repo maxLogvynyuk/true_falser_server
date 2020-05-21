@@ -8,10 +8,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       text: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(3000)
       },
       highlightedText: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1000)
       },
       LanguageId: {
         type: Sequelize.INTEGER
