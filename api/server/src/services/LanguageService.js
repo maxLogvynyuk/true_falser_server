@@ -4,8 +4,6 @@ import map from 'lodash/map';
 
 import database from '../models';
 
-;
-
 class LanguageService {
 
   static async getAllLanguages() {

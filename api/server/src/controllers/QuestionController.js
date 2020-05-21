@@ -39,6 +39,7 @@ class QuestionController {
   };
 
   static async createQuestion(request, response) {
+    console.info('createQuestion!!!', request.body);
     if (
       !request.body.text ||
       !request.body.highlightedText ||
