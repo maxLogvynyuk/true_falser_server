@@ -7,4 +7,7 @@ const questionRouter = Router();
 questionRouter.route('/')
   .post(QuestionController.createQuestion);
 
+questionRouter.route('/:id')
+  .patch(QuestionController.updateQuestion);
+
 export default questionRouter;

@@ -2,6 +2,7 @@ import parseInt from 'lodash/parseInt';
 import map from 'lodash/map';
 import split from 'lodash/split';
 import isBoolean from 'lodash/isBoolean';
+import isEmpty from 'lodash/isEmpty';
 
 import Util from '../utils/Utils';
 import QuestionService from '../services/QuestionService';
@@ -57,6 +58,35 @@ class QuestionController {
       const createdQuestion = await QuestionService.createQuestion(newQuestion);
       util.setSuccess(201, 'Question created!', createdQuestion);
 
+      return util.send(response);
+    } catch (error) {
+      util.setError(500, error.message);
+      return util.send(response);
+    }
+  };
+
+  static async updateQuestion(request, response) {
+    console.info('updateQuestion!!!', request.body);
+    const { id } = request.params;
+    if (
+      !request.body.text ||
+      !request.body.highlightedText ||
+      !request.body.LanguageId ||
+      !isBoolean(request.body.result)
+    ) {
+      util.setError(400, 'Please provide complete details');
+      return util.send(response);
+    }
+
+    const updatedQuestion = request.body;
+
+    try {
+      const updatedQuestionData = await QuestionService.updateQuestion(updatedQuestion, id);
+      if (!isEmpty(updatedQuestionData)) {
+        util.setSuccess(201, 'Question updated!', updatedQuestionData)
+      } else {
+        util.setError(400, `Question with id ${id} not found!`);
+      }
       return util.send(response);
     } catch (error) {
       util.setError(500, error.message);

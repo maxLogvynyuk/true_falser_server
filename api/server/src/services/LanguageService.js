@@ -54,7 +54,6 @@ class LanguageService {
     return {
       id,
       name: get(language, 'name'),
-      test: null,
       totalAnswers,
       correctAnswers,
     };

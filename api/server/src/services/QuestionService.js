@@ -25,6 +25,19 @@ class QuestionService {
     return database.Question.create(newQuestion);
   }
 
+  static async updateQuestion(updatedQuestion, id) {
+    const questionToUpdate = await database.Question.findOne({
+      where: {id: Number(id)}
+    });
+    if (questionToUpdate) {
+      await database.Question.update(updatedQuestion, {
+        where: {id: Number(id)}
+      });
+      return updatedQuestion;
+    }
+    return null;
+  }
+
 }
 
 export default QuestionService;
