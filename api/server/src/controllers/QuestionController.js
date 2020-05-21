@@ -10,9 +10,10 @@ const util = new Util();
 class QuestionController {
 
   static async getLanguageQuestions(request, response) {
-    const { id } = request.params;
+    const { id } = request.query;
+    // const { excludedquestions } = request.query;
     const limit = process.env.QUESTIONS_LIMIT;
-    const excludedQuestionsSplit = split(request.headers.excludedquestions, ',');
+    const excludedQuestionsSplit = split(request.query.excludedquestions, ',');
     const excludedQuestions = map(excludedQuestionsSplit, parseInt);
 
     console.info('excludedQuestions!!', excludedQuestions);

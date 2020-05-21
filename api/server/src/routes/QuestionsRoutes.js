@@ -4,7 +4,7 @@ import QuestionController from '../controllers/QuestionController';
 
 const questionsRouter = Router();
 
-questionsRouter.route('/:id')
+questionsRouter.route('/')
   .get(QuestionController.getLanguageQuestions);
 
 export default questionsRouter;
