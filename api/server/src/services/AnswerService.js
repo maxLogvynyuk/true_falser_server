@@ -16,8 +16,9 @@ class AnswerService {
     console.info('Create answer!!!',
       (Date.parse(newAnswer.timeSpend) + Number(process.env.TEST_TIME)),
     (Date.parse(get(answerTest, 'startTime'))));
+    const spendTime = `${new Date()}`;
     if (
-      (Date.parse(newAnswer.timeSpend) + Number(process.env.TEST_TIME)) >=
+      (Date.parse(spendTime) + Number(process.env.TEST_TIME)) >=
       Date.parse(get(answerTest, 'startTime'))
       // || Date.parse(newAnswer.timeSpend) < Date.parse(get(answerTest, 'startTime'))
     ) {

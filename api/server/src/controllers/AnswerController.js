@@ -1,4 +1,5 @@
 import isBoolean from 'lodash/isBoolean'
+import sequelize from 'sequelize';
 
 import Util from '../utils/Utils';
 import AnswerService from '../services/AnswerService';
@@ -28,8 +29,8 @@ class AnswerController {
       QuestionId: request.body.QuestionId,
       answer: request.body.answer,
       userAnswer: request.body.userAnswer,
-      timeSpend: `${new Date()}`,
-      // timeSpend:  sequelize.literal('CURRENT_TIMESTAMP'),
+      // timeSpend: `${new Date()}`,
+      timeSpend:  sequelize.literal('CURRENT_TIMESTAMP'),
       // timeSpend: "2020-05-19T16:11:22.858Z"
     };
 
