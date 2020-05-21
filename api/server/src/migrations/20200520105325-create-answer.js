@@ -26,7 +26,8 @@ module.exports = {
         type: Sequelize.BOOLEAN
       },
       timeSpend: {
-        type: Sequelize.STRING
+        type: Sequelize.DATE,
+        defaultValue: new Date(),
       },
       createdAt: {
         allowNull: false,

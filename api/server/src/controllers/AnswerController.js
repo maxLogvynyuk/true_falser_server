@@ -15,14 +15,25 @@ class AnswerController {
       !request.body.LanguageId ||
       !request.body.QuestionId ||
       !isBoolean(request.body.answer) ||
-      !isBoolean(request.body.userAnswer) ||
-      !request.body.timeSpend
+      !isBoolean(request.body.userAnswer)
     ) {
       util.setError(400, 'Please provide complete details');
       return util.send(response);
     }
 
-    const newAnswer = request.body;
+    const newAnswer = {
+      UserId: request.body.UserId,
+      TestId: request.body.TestId,
+      LanguageId: request.body.LanguageId,
+      QuestionId: request.body.QuestionId,
+      answer: request.body.answer,
+      userAnswer: request.body.userAnswer,
+      timeSpend: new Date(),
+      // timeSpend:  sequelize.literal('CURRENT_TIMESTAMP'),
+      // timeSpend: "2020-05-19T16:11:22.858Z"
+    };
+
+    console.info('newAnswer!!!', newAnswer);
 
     try {
       const createdAnswer = await AnswerService.createAnswer(newAnswer);

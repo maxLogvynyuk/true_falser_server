@@ -13,12 +13,16 @@ class QuestionController {
 
   static async getLanguageQuestions(request, response) {
     const { id } = request.query;
-    // const { excludedquestions } = request.query;
+    const { excludedquestions } = request.query || 0;
     const limit = process.env.QUESTIONS_LIMIT;
-    const excludedQuestionsSplit = split(request.query.excludedquestions, ',');
-    const excludedQuestions = map(excludedQuestionsSplit, parseInt);
+    const excludedQuestionsSplit = !excludedquestions
+      ? null
+      :split(excludedquestions, ',');
+    const excludedQuestions = isEmpty(excludedQuestionsSplit)
+      ? null
+      : map(excludedQuestionsSplit, parseInt);
 
-    console.info('excludedQuestions!!', excludedQuestions);
+    console.info('excludedQuestions1!!', excludedQuestions);
 
     if (!Number(id)) {
       util.setError(400, 'Please input a valid numeric value');
@@ -69,9 +73,9 @@ class QuestionController {
     console.info('updateQuestion!!!', request.body);
     const { id } = request.params;
     if (
-      !request.body.text ||
-      !request.body.highlightedText ||
-      !request.body.LanguageId ||
+      !request.body.text &&
+      !request.body.highlightedText &&
+      !request.body.LanguageId &&
       !isBoolean(request.body.result)
     ) {
       util.setError(400, 'Please provide complete details');
