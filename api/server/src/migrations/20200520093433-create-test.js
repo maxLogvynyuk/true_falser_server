@@ -11,8 +11,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       startTime: {
+        allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: new Date(),
       },
       LanguageId: {
         type: Sequelize.INTEGER

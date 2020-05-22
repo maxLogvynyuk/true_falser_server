@@ -14,8 +14,12 @@ class AnswerService {
   static async createAnswer(newAnswer) {
     const answerTest = await TestService.getATest(get(newAnswer, 'TestId'));
     console.info('Create answer spendTime and startTime!!!',
-      (Date.parse(`${new Date()}`) + Number(process.env.TEST_TIME)),
-    (Date.parse(get(answerTest, 'startTime'))));
+      new Date(),
+      answerTest.startTime,
+      (Date.parse(`${new Date()}`)),
+      (Date.parse(get(answerTest, 'startTime'))),
+      Number(process.env.TEST_TIME)
+    );
     const spendTime = `${new Date()}`;
     if (
       (Date.parse(spendTime) >=

@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
+import sequelize from 'sequelize';
 
 import Util from '../utils/Utils';
 import TestService from '../services/TestService';
@@ -16,7 +17,11 @@ class TestController {
       return util.send(response);
     }
 
-    const newTest = request.body;
+    const newTest = {
+      UserId: request.body.UserId,
+      LanguageId: request.body.LanguageId,
+      startTime: sequelize.literal('CURRENT_TIMESTAMP'),
+    };
 
     try {
       const createdTest = await TestService.createTest(newTest);
