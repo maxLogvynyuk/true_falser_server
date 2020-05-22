@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     averageTime: DataTypes.NUMBER
   }, {});
   Test.associate = function createTestAssociation(models) {
-    Test.belongsTo(models.User, {foreignKey: 'UserId', as: 'userTests'} )
+    Test.belongsTo(models.User, {foreignKey: 'UserId', as: 'userTests'} );
+    Test.hasMany(models.Answer, { as: 'testAnswers' })
   };
   return Test;
 };

@@ -1,3 +1,5 @@
+import sequelize, {Op} from 'sequelize';
+
 import database from '../models';
 
 class TestService {
@@ -27,11 +29,41 @@ class TestService {
     const theTest = await database.Test.findOne({
       where: { id: Number(id) }
     });
-
     if (theTest) {
       return theTest;
     }
     return null;
+  }
+
+  static async getTestWithAnswersResult(id) {
+    const testWithAnswers = await database.Test.findOne({
+      where: { id: Number(id) },
+      include: {
+        model: database.Answer,
+        as: 'testAnswers'
+      }
+    });
+    const totalAnswersInTest = await database.Answer.count({
+      where: { TestId: Number(id) }
+    });
+    const correctAnswersInTest = await database.Answer.count({
+      where: {
+        TestId: Number(id),
+        [Op.and]: {answer: sequelize.col('userAnswer')}
+      }
+    });
+
+    console.info(
+      'testWithAnswers result!!!',
+      totalAnswersInTest,
+      correctAnswersInTest,
+      testWithAnswers
+    );
+    return {
+      totalAnswersInTest,
+      correctAnswersInTest,
+      testWithAnswers,
+    };
   }
 
 }

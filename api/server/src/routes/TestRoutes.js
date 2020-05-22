@@ -11,4 +11,7 @@ testRouter.route('/:id')
   .get(TestController.getTestById)
   .patch(TestController.updateTest);
 
+testRouter.route('/result/:id')
+  .get(TestController.getTestWithAnswersResult);
+
 export default testRouter;

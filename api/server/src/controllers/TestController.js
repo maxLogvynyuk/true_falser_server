@@ -76,6 +76,23 @@ class TestController {
     }
   };
 
+  static async getTestWithAnswersResult(request, response) {
+    const { id } = request.params;
+    try {
+      const testWithAnswersResult = await TestService.getTestWithAnswersResult(id);
+      if (testWithAnswersResult) {
+        util.setSuccess(200, 'Test result', testWithAnswersResult);
+      } else {
+        util.setError(404, `Test result with id ${id} not found`);
+      }
+      return util.send(response);
+    } catch (error) {
+      console.info('getTestWithAnswersResult!!!', error);
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
 }
 
 export default TestController;
