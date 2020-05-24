@@ -19,7 +19,10 @@ class UserService {
     const theUser = await database.User.findOne({
       where: { login }
     });
-    return theUser
+    if (theUser) {
+      return theUser
+    }
+    return null;
   }
 
 

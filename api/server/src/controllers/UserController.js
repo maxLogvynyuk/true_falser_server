@@ -1,10 +1,12 @@
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 import UserService from '../services/UserService';
 import Util from '../utils/Utils';
 import generatePasswordHash from '../utils/generetePasswordHash';
 import decryptPasswordHash from '../utils/decryptPasswordHash';
 import TestService from '../services/TestService';
+import { urlGoogle, getGoogleAccountFromCode } from '../utils/googleUtil';
 
 const util = new Util();
 
@@ -63,6 +65,59 @@ class UserController {
       return util.send(response);
     }
     catch (error) {
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async sendAuthorizationGoogleUrl(request, response) {
+    try{
+      const getGoogleUrl = await urlGoogle();
+      if (getGoogleUrl) {
+        util.setSuccess(200, 'Google signin url', getGoogleUrl);
+      } else {
+        util.setError(404, 'Cannot get google signin url')
+      }
+
+      return util.send(response);
+    } catch (error) {
+      console.info('error authorizationWithGoogle!!!', error);
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async authorizationWithGoogleCode(request, response) {
+    const { code } = request.query;
+    console.info('code!!!', code);
+    if (isEmpty(code)) {
+      util.setError(400, 'Please provide code');
+      return util.send(response);
+    }
+
+    try {
+      const userDataFromGoogle = await getGoogleAccountFromCode(code);
+
+      if (!isEmpty(userDataFromGoogle)) {
+        const checkIfUserExist = await UserService.getUserByLogin(userDataFromGoogle.email);
+        if (!isEmpty(checkIfUserExist)) {
+          util.setSuccess(200, 'User found!', userDataFromGoogle);
+          return util.send(response);
+        }
+        const newUser = {
+          login: userDataFromGoogle.email,
+          name: get(userDataFromGoogle, 'userNames[0].displayName'),
+          password: await generatePasswordHash(get(userDataFromGoogle, 'userMetadata.sources[0].id')),
+        };
+        const createUserFromGoogleData = await UserService.createUser(newUser);
+        console.info('createUserFromGoogleData!!!', createUserFromGoogleData);
+        util.setSuccess(200, 'User found!', createUserFromGoogleData);
+      } else {
+        util.setError(404, 'User not authorize!');
+      }
+      return util.send(response);
+    } catch (error) {
+      console.info('authorizationWithGoogleCode ERROR!', error);
       util.setError(500, error);
       return util.send(response);
     }
