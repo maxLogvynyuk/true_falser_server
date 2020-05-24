@@ -7,6 +7,12 @@ const userRouter = Router();
 userRouter.route('/signup')
   .post(UserController.createUser);
 
+userRouter.route('/google')
+  .get(UserController.sendAuthorizationGoogleUrl);
+
+userRouter.route('/google/code')
+  .get(UserController.authorizationWithGoogleCode);
+
 userRouter.route('/signin')
   .post(UserController.login);
 

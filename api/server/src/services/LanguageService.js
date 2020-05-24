@@ -62,9 +62,7 @@ class LanguageService {
   static async getAllLanguagesCorrectAnswersStatistic() {
     const languages = await LanguageService.getAllLanguagesId();
     async function getLanguageStatistic(language) {
-      console.info('language!!!!!', language.id);
       const correctAnswerStatistic = await LanguageService.getRatioOfCorrectAnswerForLanguage(language.id);
-      console.info('correctAnswerStatistic!!', correctAnswerStatistic);
       return correctAnswerStatistic;
     }
     const allLanguagesStatistic = map(
