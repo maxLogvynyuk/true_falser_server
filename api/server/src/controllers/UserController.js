@@ -101,7 +101,7 @@ class UserController {
       if (!isEmpty(userDataFromGoogle)) {
         const checkIfUserExist = await UserService.getUserByLogin(userDataFromGoogle.email);
         if (!isEmpty(checkIfUserExist)) {
-          util.setSuccess(200, 'User found!', userDataFromGoogle);
+          util.setSuccess(200, 'User found!', checkIfUserExist);
           return util.send(response);
         }
         const newUser = {
