@@ -3,7 +3,7 @@ import { google } from 'googleapis';
 const googleConfig = {
   clientId: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  redirect: process.env.CLIENT_URL // this must match your google api settings
+  redirect: process.env.CLIENT_URL_GOOGLE // this must match your google api settings
 };
 
 /**

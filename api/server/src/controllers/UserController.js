@@ -7,6 +7,7 @@ import generatePasswordHash from '../utils/generetePasswordHash';
 import decryptPasswordHash from '../utils/decryptPasswordHash';
 import TestService from '../services/TestService';
 import { urlGoogle, getGoogleAccountFromCode } from '../utils/googleUtil';
+import { facebookLoginUrl, getAccessTokenAndFacebookUserData } from '../utils/facebookUtil';
 
 const util = new Util();
 
@@ -118,6 +119,60 @@ class UserController {
       return util.send(response);
     } catch (error) {
       console.info('authorizationWithGoogleCode ERROR!', error);
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async sendAuthorizationFacebookUrl(request, response) {
+    try{
+      const getFacebookUrl = facebookLoginUrl;
+      if (getFacebookUrl) {
+        util.setSuccess(200, 'Facebook signin url', getFacebookUrl);
+      } else {
+        util.setError(404, 'Cannot get facebook signin url')
+      }
+
+      return util.send(response);
+    } catch (error) {
+      console.info('error getting Facebook url!!!', error);
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async authorizationWithFacebookCode(request, response) {
+    const { code } = request.query;
+    console.info('code!!!', code);
+    if (isEmpty(code)) {
+      util.setError(400, 'Please provide code');
+      return util.send(response);
+    }
+
+    try {
+      const userDataFromFacebook = await getAccessTokenAndFacebookUserData(code);
+      console.info('userDataFromFacebook!!!', userDataFromFacebook);
+
+      if (!isEmpty(userDataFromFacebook)) {
+        const checkIfUserExist = await UserService.getUserByLogin(userDataFromFacebook.email);
+        if (!isEmpty(checkIfUserExist)) {
+          util.setSuccess(200, 'User found!', checkIfUserExist);
+          return util.send(response);
+        }
+        const newUser = {
+          login: userDataFromFacebook.email,
+          name: `${get(userDataFromFacebook, 'first_name')} ${get(userDataFromFacebook, 'last_name')}`,
+          password: await generatePasswordHash(get(userDataFromFacebook, 'userMetadata.sources[0].id')),
+        };
+        const createUserFromFacebookData = await UserService.createUser(newUser);
+        console.info('createUserFromFacebookData!!!', createUserFromFacebookData);
+        util.setSuccess(200, 'User found!', createUserFromFacebookData);
+      } else {
+        util.setError(404, 'User not authorize!');
+      }
+      return util.send(response);
+    } catch (error) {
+      console.info('authorizationWithFacebookCode ERROR!', error);
       util.setError(500, error);
       return util.send(response);
     }

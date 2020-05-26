@@ -13,6 +13,12 @@ userRouter.route('/google')
 userRouter.route('/google/code')
   .get(UserController.authorizationWithGoogleCode);
 
+userRouter.route('/facebook')
+  .get(UserController.sendAuthorizationFacebookUrl);
+
+userRouter.route('/facebook/code')
+  .get(UserController.authorizationWithFacebookCode);
+
 userRouter.route('/signin')
   .post(UserController.login);
 
