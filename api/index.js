@@ -3,9 +3,11 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
 import cors from 'cors';
+import nodeCrone from 'node-cron';
 
 import appRoutes from './server/src/routes/AppRoutes';
 import httpLogger from './server/src/logger/httpLogger';
+import generateAllLanguagesAnswersStatistic from './server/src/utils/statistic/generateAllLanguagesAnswersStatistic';
 
 config.config();
 
@@ -20,6 +22,14 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const port = process.env.PORT || 8080;
+
+nodeCrone.schedule(process.env.CRONE_TIME_VALUE,
+  async function startGenerateLanguagesAnswersStatistic() {
+    await generateAllLanguagesAnswersStatistic();
+}, {
+  schedule: true,
+  timezone: process.env.CRONE_TIME_ZONE,
+});
 
 app.use('/api', appRoutes);
 
