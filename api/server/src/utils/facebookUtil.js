@@ -18,7 +18,9 @@ export const facebookLoginUrl = `https://www.facebook.com/v7.0/dialog/oauth?${sp
 // };
 
 async function getFacebookUserData(accessToken) {
-  const response = await nodeFetch(`https://graph.facebook.com/me?fields=id,email,first_name,last_name&access_token=${accessToken}`,{
+  const response = await nodeFetch(
+    `https://graph.facebook.com/me?fields=id,email,first_name,last_name&access_token=${accessToken}`,
+    {
     method: 'get',
     // params: {
     //   fields: ['id', 'email', 'first_name', 'last_name'].join(','),
@@ -30,16 +32,20 @@ async function getFacebookUserData(accessToken) {
   return data;
 }
 
-export async function getAccessTokenAndFacebookUserData(code) {
+export async function getAccessTokenAndFacebookUserData(codeValue) {
+  const queryValues = queryString.stringify({
+    client_id: process.env.FACEBOOK_APP_ID,
+    client_secret: process.env.FACEBOOK_APP_SECRET,
+    redirect_uri: process.env.CLIENT_URL_FACEBOOK,
+    code: codeValue
+  }, {
+    sort: false,
+  });
   const response = await nodeFetch(
-    `https://graph.facebook.com/v7.0/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&redirect_uri=${process.env.CLIENT_URL_FACEBOOK}&code=${code}`, {
+    // `https://graph.facebook.com/v7.0/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_APP_SECRET}&redirect_uri=${process.env.CLIENT_URL_FACEBOOK}&code=${codeValue}`,
+    `https://graph.facebook.com/v7.0/oauth/access_token?${queryValues}`,
+    {
       method: 'get',
-      // params: {
-      //   client_id: process.env.FACEBOOK_APP_ID,
-      //   client_secret: process.env.FACEBOOK_APP_SECRET,
-      //   redirect_uri: process.env.CLIENT_URL_FACEBOOK,
-      //   code,
-      // },
     });
   const data = await response.json();
   console.log('getAccessTokenFromCode!!!!', data); // { access_token, token_type, expires_in }
