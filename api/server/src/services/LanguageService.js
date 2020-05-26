@@ -52,7 +52,7 @@ class LanguageService {
       correctAnswers
     );
     return {
-      id,
+      LanguageId: id,
       name: get(language, 'name'),
       totalAnswers,
       correctAnswers,
