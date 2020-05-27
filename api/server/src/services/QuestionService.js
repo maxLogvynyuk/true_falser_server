@@ -11,6 +11,9 @@ class QuestionService {
       if (isEmpty(excludedQuestion)) {
         const languageQuestions = database.Question.findAll({
           order: sequelize.literal('random()'),
+          include: {
+            model: database.Language,
+          },
           limit
         });
         return languageQuestions;
@@ -24,6 +27,9 @@ class QuestionService {
             }
           ]
         },
+        include: {
+          model: database.Language,
+        },
         order: sequelize.literal('random()'),
         limit
       });
@@ -34,6 +40,9 @@ class QuestionService {
       const languageQuestions = database.Question.findAll({
         where: {
           LanguageId: Number(id),
+        },
+        include: {
+          model: database.Language,
         },
         order: sequelize.literal('random()'),
         limit
@@ -49,6 +58,9 @@ class QuestionService {
             id: excludedQuestion
           }
         ]
+      },
+      include: {
+        model: database.Language,
       },
       order: sequelize.literal('random()'),
       limit
