@@ -7,6 +7,29 @@ class QuestionService {
 
   static async getLanguageQuestions(id, excludedQuestion, limit) {
     console.info('excludedQuestion2!!!', excludedQuestion);
+    if (Number(id) === Number(process.env.ALL_LANGUAGES_ID)) {
+      if (isEmpty(excludedQuestion)) {
+        const languageQuestions = database.Question.findAll({
+          order: sequelize.literal('random()'),
+          limit
+        });
+        return languageQuestions;
+      }
+
+      const languageQuestions = database.Question.findAll({
+        where: {
+          [ Op.not ]:[
+            {
+              id: excludedQuestion
+            }
+          ]
+        },
+        order: sequelize.literal('random()'),
+        limit
+      });
+      console.info('languageQuestions!!!', languageQuestions);
+      return languageQuestions;
+    }
     if (isEmpty(excludedQuestion)) {
       const languageQuestions = database.Question.findAll({
         where: {

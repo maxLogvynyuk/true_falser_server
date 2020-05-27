@@ -7,7 +7,9 @@ import database from '../models';
 class LanguageService {
 
   static async getAllLanguages() {
-    return database.Language.findAll();
+    return database.Language.findAll({
+      order: ['name']
+    });
   }
 
   static async getAllLanguagesId() {
