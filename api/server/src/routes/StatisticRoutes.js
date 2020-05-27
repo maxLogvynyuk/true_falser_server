@@ -4,10 +4,13 @@ import StatisticController from '../controllers/StatisticController';
 
 const statisticRouter = Router();
 
-statisticRouter.route('/language/:id')
-  .get(StatisticController.getLanguageCorrectAnswersStatistic);
+statisticRouter.route('/language/generate/:id')
+  .get(StatisticController.generateLanguageCorrectAnswersStatistic);
+
+statisticRouter.route('/languages/generate')
+  .get(StatisticController.generateAllLanguageCorrectAnswersStatistic);
 
 statisticRouter.route('/languages')
-  .get(StatisticController.getAllLanguageCorrectAnswersStatistic);
+  .get(StatisticController.getAllLanguagesCorrectAnswersStatistic);
 
 export default statisticRouter;

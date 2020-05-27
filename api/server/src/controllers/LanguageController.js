@@ -1,5 +1,3 @@
-import isEmpty from 'lodash/isEmpty';
-
 import Util from '../utils/Utils';
 import LanguageService from '../services/LanguageService';
 

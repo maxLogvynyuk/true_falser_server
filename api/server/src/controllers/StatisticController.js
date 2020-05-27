@@ -1,11 +1,30 @@
+import isEmpty from 'lodash/isEmpty';
+
 import Util from '../utils/Utils';
 import LanguageService from '../services/LanguageService';
+import StatisticService from '../services/StatisticService';
 
 const util = new Util();
 
 class StatisticController {
 
-  static async getLanguageCorrectAnswersStatistic(request, response) {
+  static async getAllLanguagesCorrectAnswersStatistic(request, response) {
+    try {
+      const allLanguagesStatistic = await StatisticService.getLanguagesAnswersStatistic();
+      if (!isEmpty(allLanguagesStatistic)) {
+        util.setSuccess(200, 'All languages statistic', allLanguagesStatistic)
+      } else {
+        util.setError(404, 'All languages statistic not found')
+      }
+
+      return util.send(response);
+    } catch (error) {
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async generateLanguageCorrectAnswersStatistic(request, response) {
     const { id } = request.params;
 
     if (!Number(id)) {
@@ -27,7 +46,7 @@ class StatisticController {
     }
   };
 
-  static async getAllLanguageCorrectAnswersStatistic(request, response) {
+  static async generateAllLanguageCorrectAnswersStatistic(request, response) {
 
     try {
       const allLanguagesStatistic = await LanguageService.getAllLanguagesCorrectAnswersStatistic();
