@@ -3,6 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import Util from '../utils/Utils';
 import LanguageService from '../services/LanguageService';
 import StatisticService from '../services/StatisticService';
+import TagService from '../services/TagService';
 
 const util = new Util();
 
@@ -58,6 +59,23 @@ class StatisticController {
       }
       return util.send(response);
     } catch (error) {
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async getAllTagsCorrectAnswersStatistic(request, response) {
+    try {
+      const allTagsStatistic = await TagService.getAllTagsCorrectAnswersStatistic();
+      if (!isEmpty(allTagsStatistic)) {
+        util.setSuccess(200, 'All tags statistic', allTagsStatistic)
+      } else {
+        util.setError(404, 'All tags statistic not found')
+      }
+
+      return util.send(response);
+    } catch (error) {
+      console.info('Error in getAllTagsCorrectAnswersStatistic!!', error);
       util.setError(500, error);
       return util.send(response);
     }

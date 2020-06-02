@@ -6,7 +6,8 @@ module.exports = (sequelize, DataTypes) => {
     QuestionId: DataTypes.NUMBER,
     answer: DataTypes.BOOLEAN,
     userAnswer: DataTypes.BOOLEAN,
-    timeSpend: DataTypes.STRING
+    timeSpend: DataTypes.STRING,
+    tags: DataTypes.ARRAY(DataTypes.INTEGER),
   }, {});
   Answer.associate = function createAnswerAssociation(models) {
     Answer.belongsTo(models.Test, {foreignKey: 'TestId'});

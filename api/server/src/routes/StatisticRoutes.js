@@ -13,4 +13,7 @@ statisticRouter.route('/languages/generate')
 statisticRouter.route('/languages')
   .get(StatisticController.getAllLanguagesCorrectAnswersStatistic);
 
+statisticRouter.route('/tags')
+  .get(StatisticController.getAllTagsCorrectAnswersStatistic);
+
 export default statisticRouter;
