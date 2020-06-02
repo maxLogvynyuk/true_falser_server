@@ -11,9 +11,17 @@ class QuestionService {
       if (isEmpty(excludedQuestion)) {
         const languageQuestions = database.Question.findAll({
           order: sequelize.literal('random()'),
-          include: {
-            model: database.Language,
-          },
+          include: [
+            {
+              model: database.Language,
+            },
+            {
+              model: database.QuestionTag,
+              include: {
+                model: database.Tag,
+              }
+            }
+          ],
           limit
         });
         return languageQuestions;
@@ -70,7 +78,9 @@ class QuestionService {
   }
 
   static async createQuestion(newQuestion) {
-    return database.Question.create(newQuestion);
+    const createdQuestion = await database.Question.create(newQuestion);
+    console.info('createdQuestion in service!!!!', createdQuestion);
+    return createdQuestion;
   }
 
   static async updateQuestion(updatedQuestion, id) {

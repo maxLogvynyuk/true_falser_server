@@ -3,10 +3,12 @@ module.exports = (sequelize, DataTypes) => {
     text: DataTypes.STRING,
     highlightedText: DataTypes.STRING,
     LanguageId: DataTypes.NUMBER,
-    result: DataTypes.BOOLEAN
+    result: DataTypes.BOOLEAN,
+    tags: DataTypes.ARRAY(DataTypes.INTEGER),
   }, {});
   Question.associate = function createQuestionAssociation(models) {
-    Question.belongsTo(models.Language, {foreignKey: 'LanguageId'})
+    Question.belongsTo(models.Language, {foreignKey: 'LanguageId'});
+    Question.hasMany(models.QuestionTag)
   };
   return Question;
 };

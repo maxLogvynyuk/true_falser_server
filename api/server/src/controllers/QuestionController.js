@@ -3,9 +3,11 @@ import map from 'lodash/map';
 import split from 'lodash/split';
 import isBoolean from 'lodash/isBoolean';
 import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
 
 import Util from '../utils/Utils';
 import QuestionService from '../services/QuestionService';
+import QuestionTagService from '../services/QuestionsTagService';
 
 const util = new Util();
 
@@ -57,13 +59,34 @@ class QuestionController {
     }
 
     const newQuestion = request.body;
-
+    const newQuestionTags = request.body.tags;
     try {
       const createdQuestion = await QuestionService.createQuestion(newQuestion);
-      util.setSuccess(201, 'Question created!', createdQuestion);
+      if (newQuestion) {
+        console.info('createdQuestion data!!!', createdQuestion);
+        const newQuestionId = get(createdQuestion, 'id');
+        const newQuestionTagsData = await QuestionTagService.createQuestionTags(
+          newQuestionId,
+          newQuestionTags,
+        );
+        console.info('newQuestionTagsData!!!', newQuestionTagsData);
+        if (newQuestionTagsData) {
+          util.setSuccess(
+            201,
+            'Question created!',
+            {
+              createdQuestion,
+              newQuestionTagsData,
+            });
 
+          return util.send(response);
+        }
+      }
+      util.setError(404, 'Question not created!');
       return util.send(response);
+
     } catch (error) {
+      console.info('error createdQuestion!!!', error);
       util.setError(500, error.message);
       return util.send(response);
     }
