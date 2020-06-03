@@ -7,7 +7,7 @@ import nodeCrone from 'node-cron';
 
 import appRoutes from './server/src/routes/AppRoutes';
 import httpLogger from './server/src/logger/httpLogger';
-import generateAllLanguagesAnswersStatistic from './server/src/utils/statistic/generateAllLanguagesAnswersStatistic';
+import generateStatistic from './server/src/utils/statistic/generateStatistic';
 
 config.config();
 
@@ -25,7 +25,7 @@ const port = process.env.PORT || 8080;
 
 nodeCrone.schedule(process.env.CRONE_TIME_VALUE,
   async function startGenerateLanguagesAnswersStatistic() {
-    await generateAllLanguagesAnswersStatistic();
+    await generateStatistic();
 }, {
   schedule: true,
   timezone: process.env.CRONE_TIME_ZONE,

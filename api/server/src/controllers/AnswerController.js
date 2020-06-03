@@ -22,6 +22,8 @@ class AnswerController {
       return util.send(response);
     }
 
+    const answerTime = await AnswerService.getAnswerTime(request.body.TestId);
+
     const newAnswer = {
       UserId: request.body.UserId,
       TestId: request.body.TestId,
@@ -31,7 +33,7 @@ class AnswerController {
       userAnswer: request.body.userAnswer,
       // timeSpend: `${new Date()}`,
       timeSpend:  sequelize.literal('CURRENT_TIMESTAMP'),
-      tags: request.body.tags,
+      answerTime: Number(answerTime),
       // timeSpend: "2020-05-19T16:11:22.858Z"
     };
 

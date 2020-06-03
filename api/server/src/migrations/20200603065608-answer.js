@@ -2,11 +2,9 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.addColumn(
       'Answers',
-      'tags',
+      'answerTime',
       {
-        type: Sequelize.ARRAY({
-          type: Sequelize.INTEGER
-        }),
+        type: Sequelize.INTEGER,
       }
     )
   },
@@ -14,7 +12,7 @@ module.exports = {
   down: (queryInterface) => {
     return queryInterface.removeColumn(
       'Answers',
-      'tags'
+      'answerTime'
     );
   }
 };

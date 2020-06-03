@@ -4,6 +4,7 @@ import Util from '../utils/Utils';
 import LanguageService from '../services/LanguageService';
 import StatisticService from '../services/StatisticService';
 import TagService from '../services/TagService';
+import TagStatisticService from '../services/TagStatisticService';
 
 const util = new Util();
 
@@ -76,6 +77,74 @@ class StatisticController {
       return util.send(response);
     } catch (error) {
       console.info('Error in getAllTagsCorrectAnswersStatistic!!', error);
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async getAllTagsAverageTimeOfCorrectAnswersStatistic(request, response) {
+    try {
+      const allTagsAverageTime = await TagService.getAllTagsAverageTimeOfCorrectAnswer();
+      if (!allTagsAverageTime) {
+        util.setError(
+          404,
+          `Tags statistic not found!`,
+          );
+      } else {
+        util.setSuccess(
+          200,
+          "Average time of correct answers statistic of tag found!",
+           allTagsAverageTime,
+          );
+      }
+      return util.send(response);
+    } catch (error) {
+      console.info('getAllTagsAverageTimeOfCorrectAnswersStatistic!!!', error);
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async getAllTagsAverageTimeOfCorrectIncorrectAnswersStatistic(request, response) {
+    const {id} = request.params;
+    try {
+      const allTagsAverageTime = await TagService.getAllTagsAverageTimeOfCorrectAndIncorrectAnswer();
+      if (!allTagsAverageTime) {
+        util.setError(
+          404,
+          `Average time of correct and incorrect answers statistic of tag with id ${id} not found!`,
+        );
+      } else {
+        util.setSuccess(
+          200,
+          "Average time of correct and incorrect answers statistic of tag found!",
+          allTagsAverageTime,
+        );
+      }
+      return util.send(response);
+    } catch (error) {
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
+
+  static async getAllTagsStatistic(request, response) {
+    try {
+      const allTagsStatistic = await TagStatisticService.getAllTagsStatistic();
+      if (!allTagsStatistic) {
+        util.setError(
+          404,
+          `Tags statistic not found!`,
+        );
+      } else {
+        util.setSuccess(
+          200,
+          "Tags statistic found!",
+          allTagsStatistic,
+        );
+      }
+      return util.send(response);
+    } catch (error) {
       util.setError(500, error);
       return util.send(response);
     }

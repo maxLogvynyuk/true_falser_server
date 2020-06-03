@@ -16,4 +16,13 @@ statisticRouter.route('/languages')
 statisticRouter.route('/tags')
   .get(StatisticController.getAllTagsCorrectAnswersStatistic);
 
+statisticRouter.route('/tags/generate/average-true')
+  .get(StatisticController.getAllTagsAverageTimeOfCorrectAnswersStatistic);
+
+statisticRouter.route('/tags/generate/all')
+  .get(StatisticController.getAllTagsAverageTimeOfCorrectIncorrectAnswersStatistic);
+
+statisticRouter.route('/tags/all')
+  .get(StatisticController.getAllTagsStatistic);
+
 export default statisticRouter;
