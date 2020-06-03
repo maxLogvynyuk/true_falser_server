@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 import database from '../models';
 import TestService from './TestService';
@@ -38,9 +39,9 @@ class AnswerService {
         ['timeSpend', 'DESC'],
       ],
       limit: 1
-    }) || null;
+    });
     console.info('currentAnswerTimeValue000!!!', previousAnswerInTest);
-    if (!previousAnswerInTest) {
+    if (isEmpty(previousAnswerInTest)) {
       const answerTest = await TestService.getATest(id);
       const currentAnswerTime = Number(
         Date.parse(`${new Date}`) - Date.parse(get(answerTest, 'startTime'))
