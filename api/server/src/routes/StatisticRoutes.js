@@ -13,7 +13,7 @@ statisticRouter.route('/languages/generate')
 statisticRouter.route('/languages')
   .get(StatisticController.getAllLanguagesCorrectAnswersStatistic);
 
-statisticRouter.route('/tags')
+statisticRouter.route('/tags/answers-correct')
   .get(StatisticController.getAllTagsCorrectAnswersStatistic);
 
 statisticRouter.route('/tags/generate/average-true')
