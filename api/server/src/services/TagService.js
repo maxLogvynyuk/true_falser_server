@@ -201,8 +201,8 @@ class TagService {
       return {
         TagId: id,
         name: get(tag, 'name'),
-        totalAnswers: get(correctAnswerStatistic, 'totalAnswers'),
-        correctAnswers: get(correctAnswerStatistic, 'correctAnswers'),
+        totalAnswers: Number(get(correctAnswerStatistic, 'totalAnswers')),
+        correctAnswers: Number(get(correctAnswerStatistic, 'correctAnswers')),
         averageTimeOfCorrectAnswers,
         averageTimeOfIncorrectAnswers,
         percentile95OfCorrect: Math.round(get(percentile95OfCorrect, '[0].[0].percentile_95')),
