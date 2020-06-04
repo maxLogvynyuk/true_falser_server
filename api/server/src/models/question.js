@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Question = sequelize.define('Question', {
     text: DataTypes.STRING,
-    highlightedText: DataTypes.STRING,
+    // highlightedText: DataTypes.STRING,
     LanguageId: DataTypes.NUMBER,
     result: DataTypes.BOOLEAN,
     tags: DataTypes.ARRAY(DataTypes.INTEGER),

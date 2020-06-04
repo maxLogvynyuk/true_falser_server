@@ -62,7 +62,7 @@ class AnswerService {
       Date.parse(
         get(previousAnswerInTest, '[0].timeSpend')
       ),
-      );
+     );
     return currentAnswerTimeValue;
   }
 

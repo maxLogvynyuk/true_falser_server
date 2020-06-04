@@ -16,7 +16,6 @@ class TagService {
         exclude: ["name", "createdAt", "updatedAt"]
       }
     });
-    console.info('getAllTagsId222!!!!', allTagsId);
     if (allTagsId) {
       return allTagsId
     }
@@ -24,20 +23,6 @@ class TagService {
   }
 
   static async getRatioOfCorrectAnswerForTag(id) {
-    // const totalAnswers = await database.Answer.count({
-    //   attributes: [
-    //     sequelize.literal(
-    //       `SELECT COUNT(*) FROM public."Answers" WHERE '${id}' = ANY (tags)`
-    //     ),
-    //   ]
-    // });
-    // const correctAnswers = await database.Answer.count({
-    //   attributes: [
-    //     sequelize.literal(
-    //       `SELECT COUNT(*) FROM public."Answers" WHERE '${id}' = ANY (tags) AND public."Answers"."answer" = public."Answers"."userAnswer" `
-    //     ),
-    //   ]
-    // });
     const totalAnswers = await database.sequelize.query(
       `select count(*)  from public."Answers" as a left join public."Questions" as q on q.id = a."QuestionId"
        left join public."QuestionTags" as qt on qt."QuestionId" = q.id where qt."TagId" = ${id} and a."answer" = a."userAnswer"`,
@@ -55,11 +40,6 @@ class TagService {
     // const tag = await database.Tag.findOne({
     //   where: {id: Number(id)}
     // });
-    console.info(
-      'getRatioOfCorrectAnswer Tags!!',
-      totalAnswers,
-      correctAnswers
-    );
     return {
       // TagId: id,
       // name: get(tag, 'name'),
@@ -80,12 +60,6 @@ class TagService {
   }
 
   static async getAverageTimeOfCorrectAnswerForTag(id) {
-    // const correctAnswers = await database.sequelize.query(
-    //   `SELECT "answerTime" FROM public."Answers" WHERE '${id}' = ANY (tags) AND public."Answers"."answer" = public."Answers"."userAnswer"`,
-    //   {
-    //     type: QueryTypes.SELECT
-    //   }
-    // );
     const correctAnswers = await database.sequelize.query(
       `select a."answerTime" as "answerTime"  from public."Answers" as a left join public."Questions" as q on q.id = a."QuestionId"
        left join public."QuestionTags" as qt on qt."QuestionId" = q.id where qt."TagId" = ${id} and a."answer" = a."userAnswer"`,
@@ -109,12 +83,6 @@ class TagService {
       const tag = await database.Tag.findOne({
         where: {id: Number(id)}
       });
-      console.info(
-        'getAverageTimeOfCorrectAnswer Tags!!',
-        // correctAnswers,
-        averageTimeOfCorrectAnswersArray,
-        averageTimeOfCorrectAnswers,
-      );
       return {
         TagId: id,
         name: get(tag, 'name'),
@@ -161,7 +129,6 @@ class TagService {
       return Number(get(answer, 'answerTime'))
     });
 
-
     const incorrectAnswers = await database.sequelize.query(
       `select a."answerTime" as "answerTime"  from public."Answers" as a left join public."Questions" as q on q.id = a."QuestionId"
        left join public."QuestionTags" as qt on qt."QuestionId" = q.id where qt."TagId" = ${id} and a."answer" != a."userAnswer"`,
@@ -190,14 +157,14 @@ class TagService {
         averageTimeOfIncorrectAnswersArray.reduce(reducer)
         / averageTimeOfIncorrectAnswersArray.length
       );
-      console.info(
-        'getAverageTimeOfCorrectAnswer Tags!!',
-        // correctAnswers,
-        averageTimeOfIncorrectAnswersArray,
-        averageTimeOfIncorrectAnswers,
-        percentile95OfCorrect,
-        percentile95OfIncorrect,
-      );
+      // console.info(
+      //   'get Tags statistic in service!!',
+      //   // correctAnswers,
+      //   averageTimeOfIncorrectAnswersArray,
+      //   averageTimeOfIncorrectAnswers,
+      //   percentile95OfCorrect,
+      //   percentile95OfIncorrect,
+      // );
       return {
         TagId: id,
         name: get(tag, 'name'),

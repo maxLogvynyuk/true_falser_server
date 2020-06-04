@@ -50,7 +50,6 @@ class QuestionController {
     console.info('createQuestion!!!', request.body);
     if (
       !request.body.text ||
-      !request.body.highlightedText ||
       !request.body.LanguageId ||
       !isBoolean(request.body.result)
     ) {
