@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
+import forEach from 'lodash/forEach';
 
 import Util from '../utils/Utils';
 import LanguageService from '../services/LanguageService';
@@ -105,20 +106,24 @@ class StatisticController {
     }
   }
 
-  static async getAllTagsAverageTimeOfCorrectIncorrectAnswersStatistic(request, response) {
-    const {id} = request.params;
+  static async generateAllTagsStatistic(request, response) {
     try {
-      const allTagsAverageTime = await TagService.getAllTagsAverageTimeOfCorrectAndIncorrectAnswer();
-      if (!allTagsAverageTime) {
+      const allTagsStatistic =
+        await TagService.getAllTagsNumberOfCorrectAnswersAverageTimesPercentilesStatistic();
+      if (!allTagsStatistic) {
         util.setError(
           404,
-          `Average time of correct and incorrect answers statistic of tag with id ${id} not found!`,
+          'Tags statistic not generated!',
         );
       } else {
+        await TagStatisticService.clearTagsStatistic();
+        forEach(allTagsStatistic, (item) => {
+          TagStatisticService.writeDownTagStatistic(item)
+        });
         util.setSuccess(
           200,
-          "Average time of correct and incorrect answers statistic of tag found!",
-          allTagsAverageTime,
+          "Tags statistic generated!",
+          allTagsStatistic,
         );
       }
       return util.send(response);

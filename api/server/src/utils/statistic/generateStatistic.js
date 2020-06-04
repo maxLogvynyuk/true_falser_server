@@ -9,7 +9,7 @@ import TagStatisticService from '../../services/TagStatisticService';
 
 async function generateStatistic() {
   const allLanguagesAnswersStatistic = await LanguageService.getAllLanguagesCorrectAnswersStatistic();
-  console.info('Cron generateStatistic!!!');
+  console.info('Cron generate languages statistic!!!');
 
   if (!isEmpty(allLanguagesAnswersStatistic)) {
     await StatisticService.clearLanguagesAnswersStatisticTable();
@@ -17,7 +17,8 @@ async function generateStatistic() {
       StatisticService.writeDownNewLanguagesAnswersStatistic(item)
     })
   }
-  const allTagsStatistic = await TagService.getAllTagsAverageTimeOfCorrectAndIncorrectAnswer();
+  const allTagsStatistic =
+    await TagService.getAllTagsNumberOfCorrectAnswersAverageTimesPercentilesStatistic();
   if (allTagsStatistic) {
      await TagStatisticService.clearTagsStatistic();
      console.info('Cron tag statistic!!!', allTagsStatistic);

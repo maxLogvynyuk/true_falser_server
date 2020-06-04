@@ -20,7 +20,7 @@ statisticRouter.route('/tags/generate/average-true')
   .get(StatisticController.getAllTagsAverageTimeOfCorrectAnswersStatistic);
 
 statisticRouter.route('/tags/generate/all')
-  .get(StatisticController.getAllTagsAverageTimeOfCorrectIncorrectAnswersStatistic);
+  .get(StatisticController.generateAllTagsStatistic);
 
 statisticRouter.route('/tags/all')
   .get(StatisticController.getAllTagsStatistic);

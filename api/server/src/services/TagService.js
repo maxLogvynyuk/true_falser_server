@@ -135,7 +135,7 @@ class TagService {
     return  Promise.all(allTagsStatisticCorrectAnswersAverageTime);
   }
 
-  static async getAverageTimeOfCorrectAndIncorrectAnswerForTag(id) {
+  static async getNumberOfCorrectAnswersAverageTimesPercentilesForTag(id) {
     const tag = await database.Tag.findOne({
       where: {id: Number(id)}
     });
@@ -205,8 +205,8 @@ class TagService {
         correctAnswers: get(correctAnswerStatistic, 'correctAnswers'),
         averageTimeOfCorrectAnswers,
         averageTimeOfIncorrectAnswers,
-        percentile95OfCorrect: get(percentile95OfCorrect, '[0].[0].percentile_95'),
-        percentile95OfIncorrect: get(percentile95OfIncorrect, '[0].[0].percentile_95'),
+        percentile95OfCorrect: Math.round(get(percentile95OfCorrect, '[0].[0].percentile_95')),
+        percentile95OfIncorrect: Math.round(get(percentile95OfIncorrect, '[0].[0].percentile_95')),
       };
     }
     return {
@@ -215,15 +215,16 @@ class TagService {
     };
   }
 
-  static async getAllTagsAverageTimeOfCorrectAndIncorrectAnswer() {
+  static async getAllTagsNumberOfCorrectAnswersAverageTimesPercentilesStatistic() {
     const tagsId = await TagService.getAllTagsId();
     async function getTagAverageTimeStatistic(tag) {
-      const correctAndIncorrectAnswersAverageTime = await TagService.getAverageTimeOfCorrectAndIncorrectAnswerForTag(tag.id);
-      return correctAndIncorrectAnswersAverageTime;
+      const numberOfCorrectAnswersAverageTimesPercentilesStatistic =
+        await TagService.getNumberOfCorrectAnswersAverageTimesPercentilesForTag(tag.id);
+      return numberOfCorrectAnswersAverageTimesPercentilesStatistic;
     }
-    const allTagsStatisticCorrectIncorrectAnswersAverageTime = map(
+    const allTagsStatistic = map(
       tagsId, async (tag) => getTagAverageTimeStatistic(tag));
-    return  Promise.all(allTagsStatisticCorrectIncorrectAnswersAverageTime);
+    return  Promise.all(allTagsStatistic);
   }
 }
 
