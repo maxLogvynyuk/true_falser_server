@@ -14,16 +14,16 @@ module.exports = {
         type: Sequelize.STRING
       },
       totalAnswers: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       correctAnswers: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       averageTimeOfCorrectAnswers: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       averageTimeOfIncorrectAnswers: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       percentile95OfCorrect: {
         type: Sequelize.FLOAT

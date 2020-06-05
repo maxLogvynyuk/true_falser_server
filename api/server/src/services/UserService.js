@@ -17,7 +17,16 @@ class UserService {
 
   static async getUserByLogin(login) {
     const theUser = await database.User.findOne({
-      where: { login }
+      where: { login },
+      include: [
+        {
+          model: database.UserLanguage,
+          as: 'userLanguages',
+          include: [
+            {model: database.Language}
+          ]
+        }
+      ],
     });
     if (theUser) {
       return theUser

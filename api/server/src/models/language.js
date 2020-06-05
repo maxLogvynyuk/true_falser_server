@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
   Language.associate = function createLanguageAccociation(models) {
     Language.hasMany(models.Question, {as: 'languageQuestions'});
     Language.hasMany(models.Answer, {as: 'languageAnswer'});
+    Language.hasMany(models.UserLanguage);
   };
   return Language;
 };
