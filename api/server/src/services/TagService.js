@@ -147,16 +147,14 @@ class TagService {
       !isEmpty(averageTimeOfIncorrectAnswersArray)
       && !isEmpty(averageTimeOfCorrectAnswersArray)
     ) {
-      const averageTimeOfCorrectAnswers = Math.round(
+      const averageTimeOfCorrectAnswers =
         // eslint-disable-next-line lodash/prefer-lodash-method
         averageTimeOfCorrectAnswersArray.reduce(reducer)
-        / averageTimeOfCorrectAnswersArray.length
-      );
-      const averageTimeOfIncorrectAnswers = Math.round(
+        / averageTimeOfCorrectAnswersArray.length;
+      const averageTimeOfIncorrectAnswers =
         // eslint-disable-next-line lodash/prefer-lodash-method
         averageTimeOfIncorrectAnswersArray.reduce(reducer)
-        / averageTimeOfIncorrectAnswersArray.length
-      );
+        / averageTimeOfIncorrectAnswersArray.length;
       // console.info(
       //   'get Tags statistic in service!!',
       //   // correctAnswers,
@@ -172,8 +170,8 @@ class TagService {
         correctAnswers: Number(get(correctAnswerStatistic, 'correctAnswers')),
         averageTimeOfCorrectAnswers,
         averageTimeOfIncorrectAnswers,
-        percentile95OfCorrect: Math.round(get(percentile95OfCorrect, '[0].[0].percentile_95')),
-        percentile95OfIncorrect: Math.round(get(percentile95OfIncorrect, '[0].[0].percentile_95')),
+        percentile95OfCorrect: get(percentile95OfCorrect, '[0].[0].percentile_95'),
+        percentile95OfIncorrect: get(percentile95OfIncorrect, '[0].[0].percentile_95'),
       };
     }
     return {

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import UserController from '../controllers/UserController';
+import UserLanguageController from '../controllers/UserLanguageController';
 
 const userRouter = Router();
 
@@ -24,5 +25,8 @@ userRouter.route('/signin')
 
 userRouter.route('/tests/:id')
   .get(UserController.getUserTests);
+
+userRouter.route('/languages')
+  .post(UserLanguageController.addUserLanguages);
 
 export default userRouter;
