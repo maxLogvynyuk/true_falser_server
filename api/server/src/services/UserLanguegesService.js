@@ -1,6 +1,7 @@
 // import forEach from 'lodash/forEach';
 import map from 'lodash/map';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 
 import database from '../models';
 
@@ -37,6 +38,29 @@ class UserLanguageService {
       where: {UserId: Number(id)}
     });
     return userLanguages;
+  }
+
+  static async updateUserLanguage(updatedData, id) {
+    return database.UserLanguage.update(updatedData, {where: {id: Number(id)}});
+  }
+
+  static async updateAllUserLanguages(userLanguagesArray) {
+    console.info('userLanguagesArray!!!', userLanguagesArray);
+    const updatedUserLanguages = map(userLanguagesArray, async language => {
+      const id = get(language, 'id');
+      const userLanguageToUpdate = await database.UserLanguage.findOne({ where: { id: Number(id) } });
+      if (!isEmpty(userLanguageToUpdate)) {
+        const newDataFolLanguage = {
+          // LanguageId: get(language, 'LanguageId'),
+          myAssessment: get(language, 'myAssessment'),
+        };
+        const updatedUserLanguage = await UserLanguageService.updateUserLanguage(newDataFolLanguage, id);
+        console.info('updatedUserLanguage!!1', updatedUserLanguage);
+        return language;
+      }
+      return null;
+    });
+    return Promise.all(updatedUserLanguages);
   }
 }
 

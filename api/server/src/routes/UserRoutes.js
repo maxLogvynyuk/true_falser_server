@@ -29,4 +29,7 @@ userRouter.route('/tests/:id')
 userRouter.route('/languages')
   .post(UserLanguageController.addUserLanguages);
 
+userRouter.route('/languages-update')
+  .patch(UserLanguageController.updateUserLanguages);
+
 export default userRouter;

@@ -36,6 +36,29 @@ class UserLanguageController {
       return util.send(response);
     }
   }
+
+  static async updateUserLanguages(request, response) {
+    if (isEmpty(request.body.userLanguages)) {
+      util.setError(404, 'Please provide complete details');
+      return util.send(response);
+    }
+
+    const userLanguages = request.body.userLanguages;
+
+    try {
+      const updatedUserLanguagesData = await UserLanguageService.updateAllUserLanguages(userLanguages);
+      if (updatedUserLanguagesData) {
+        util.setSuccess(200, 'User languages updated successfully!', updatedUserLanguagesData);
+      } else {
+        util.setError(404, 'User languages not updated!');
+      }
+
+      return util.send(response);
+    } catch (error) {
+      util.setError(500, error);
+      return util.send(response);
+    }
+  }
 }
 
 export default UserLanguageController;
