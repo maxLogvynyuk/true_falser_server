@@ -10,7 +10,7 @@ class UserLanguageController {
   static async addUserLanguages(request, response) {
     if (
       !isNumber(request.body.UserId)
-      && isEmpty(request.body.UserLanguages)
+      && isEmpty(request.body.userLanguages)
     ) {
       util.setError(400, 'Please provide complete details');
       util.send(response);
