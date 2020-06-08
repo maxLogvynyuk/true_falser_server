@@ -7,7 +7,18 @@ import database from '../models';
 
 class UserLanguageService {
   static async createUserLanguage(data) {
-    return database.UserLanguage.create(data);
+    const newUserLanguage = await database.UserLanguage.create(data);
+    if (!isEmpty(newUserLanguage)) {
+      return database.UserLanguage.findOne({
+        where: {id: Number(get(newUserLanguage, 'id'))},
+        include: [
+          {
+            model: database.Language,
+          }
+        ],
+      })
+    }
+    return null;
   }
 
   static async setUserLanguages(userId, userLanguagesArray) {
