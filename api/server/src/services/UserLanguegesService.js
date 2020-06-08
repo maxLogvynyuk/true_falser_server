@@ -35,7 +35,12 @@ class UserLanguageService {
 
   static async getUserLanguages(id) {
     const userLanguages = await database.UserLanguage.findAll({
-      where: {UserId: Number(id)}
+      where: {UserId: Number(id)},
+      include: [
+        {
+          model: database.Language,
+        }
+      ],
     });
     return userLanguages;
   }
