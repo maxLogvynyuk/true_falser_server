@@ -18,8 +18,8 @@ class QuestionService {
       const allLanguagesId = map(allLanguagesIdArray, language => {
         return get(language, 'id');
       });
-      console.info('allLanguagesId!!!!', allLanguagesId);
       const languagesIdArray = isEmpty(userLanguagesId) ? allLanguagesId : userLanguagesId;
+      console.info('allLanguages!!!!', allLanguagesId, languagesIdArray);
       if (isEmpty(excludedQuestion)) {
         const languageQuestions = database.Question.findAll({
           where: {

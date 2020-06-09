@@ -27,13 +27,15 @@ class QuestionController {
       : map(excludedQuestionsSplit, parseInt);
     const userLanguagesId = !userlanguages
         ? null
-        : get(
-          queryString.parse(
-            `userLanguages=${userlanguages}`,
-            {arrayFormat: 'comma'}
-            ),
+        : map(
+           get(
+             queryString.parse(
+               `userLanguages=${userlanguages}`,
+                {arrayFormat: 'comma'}
+                ),
         'userLanguages',
-        );
+           ),
+        parseInt);
     // const userLanguagesId = queryString.parse(`userLanguages=${userLanguagesIdString}`, {arrayFormat: 'comma'});
 
     console.info(
