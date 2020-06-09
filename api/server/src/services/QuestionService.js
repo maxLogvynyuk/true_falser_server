@@ -1,15 +1,30 @@
 import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
+import get from 'lodash/get';
 import sequelize, { Op } from 'sequelize';
 
 import database from '../models';
 
 class QuestionService {
 
-  static async getLanguageQuestions(id, excludedQuestion, limit) {
+  static async getLanguageQuestions(id, excludedQuestion, limit, userLanguagesId) {
     console.info('excludedQuestion2!!!', excludedQuestion);
     if (Number(id) === Number(process.env.ALL_LANGUAGES_ID)) {
+      const allLanguagesIdArray = await database.Language.findAll({
+        attributes: {
+          exclude: ["name", "createdAt", "updatedAt"]
+        }
+      });
+      const allLanguagesId = map(allLanguagesIdArray, language => {
+        return get(language, 'id');
+      });
+      console.info('allLanguagesId!!!!', allLanguagesId);
+      const languagesIdArray = isEmpty(userLanguagesId) ? allLanguagesId : userLanguagesId;
       if (isEmpty(excludedQuestion)) {
         const languageQuestions = database.Question.findAll({
+          where: {
+            LanguageId: languagesIdArray,
+          },
           order: sequelize.literal('random()'),
           include: [
             {
@@ -29,6 +44,7 @@ class QuestionService {
 
       const languageQuestions = database.Question.findAll({
         where: {
+          LanguageId: languagesIdArray,
           [ Op.not ]:[
             {
               id: excludedQuestion

@@ -4,6 +4,7 @@ import split from 'lodash/split';
 import isBoolean from 'lodash/isBoolean';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
+import queryString from 'query-string';
 
 import Util from '../utils/Utils';
 import QuestionService from '../services/QuestionService';
@@ -16,6 +17,7 @@ class QuestionController {
   static async getLanguageQuestions(request, response) {
     const { id } = request.query;
     const { excludedquestions } = request.query || 0;
+    const { userlanguages } = request.query;
     const limit = process.env.QUESTIONS_LIMIT;
     const excludedQuestionsSplit = !excludedquestions
       ? null
@@ -23,8 +25,22 @@ class QuestionController {
     const excludedQuestions = isEmpty(excludedQuestionsSplit)
       ? null
       : map(excludedQuestionsSplit, parseInt);
+    const userLanguagesId = !userlanguages
+        ? null
+        : get(
+          queryString.parse(
+            `userLanguages=${userlanguages}`,
+            {arrayFormat: 'comma'}
+            ),
+        'userLanguages',
+        );
+    // const userLanguagesId = queryString.parse(`userLanguages=${userLanguagesIdString}`, {arrayFormat: 'comma'});
 
-    console.info('excludedQuestions1!!', excludedQuestions);
+    console.info(
+      'excludedQuestions, and userLang1!!',
+      excludedQuestions,
+      userLanguagesId,
+      );
 
     if (!Number(id)) {
       util.setError(400, 'Please input a valid numeric value');
@@ -32,7 +48,13 @@ class QuestionController {
     }
 
     try {
-      const languageQuestions = await QuestionService.getLanguageQuestions(id, excludedQuestions, limit);
+      const languageQuestions =
+        await QuestionService.getLanguageQuestions(
+          id,
+          excludedQuestions,
+          limit,
+          userLanguagesId,
+          );
       if (!languageQuestions) {
         util.setError(404, `Cannot find questions of language with id ${id}`);
       } else {
