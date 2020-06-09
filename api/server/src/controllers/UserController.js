@@ -31,6 +31,14 @@ class UserController {
     };
 
     try {
+      const checkIfUserExist = await UserService.getUserByLogin(request.body.login);
+      if (!isEmpty(checkIfUserExist)) {
+        util.setError(
+          403,
+          `User with login ${get(newUser, 'login')} already exists. Please choose another login.`,
+        );
+        return util.send(response);
+      }
       const createdUser = await UserService.createUser(newUser);
       util.setSuccess(201, 'User Added!', createdUser);
 
@@ -102,7 +110,14 @@ class UserController {
       if (!isEmpty(userDataFromGoogle)) {
         const checkIfUserExist = await UserService.getUserByLogin(userDataFromGoogle.email);
         if (!isEmpty(checkIfUserExist)) {
-          util.setSuccess(200, 'User found!', checkIfUserExist);
+          util.setSuccess(
+            200,
+            'User found!',
+            {
+              userData: checkIfUserExist,
+              isRegistration: false,
+            });
+
           return util.send(response);
         }
         const newUser = {
@@ -110,9 +125,15 @@ class UserController {
           name: get(userDataFromGoogle, 'userNames[0].displayName'),
           password: await generatePasswordHash(get(userDataFromGoogle, 'userMetadata.sources[0].id')),
         };
-        const createUserFromGoogleData = await UserService.createUser(newUser);
-        console.info('createUserFromGoogleData!!!', createUserFromGoogleData);
-        util.setSuccess(200, 'User found!', createUserFromGoogleData);
+        const createUserData = await UserService.createUser(newUser);
+        console.info('createUserFromGoogleData!!!', createUserData);
+        util.setSuccess(
+          200,
+          'User created!',
+          {
+            userData: createUserData,
+            isRegistration: true,
+          });
       } else {
         util.setError(404, 'User not authorize!');
       }
@@ -156,7 +177,13 @@ class UserController {
       if (!isEmpty(userDataFromFacebook)) {
         const checkIfUserExist = await UserService.getUserByLogin(userDataFromFacebook.email);
         if (!isEmpty(checkIfUserExist)) {
-          util.setSuccess(200, 'User found!', checkIfUserExist);
+          util.setSuccess(
+            200,
+            'User found!',
+            {
+              userData: checkIfUserExist,
+              isRegistration: false,
+            });
           return util.send(response);
         }
         const newUser = {
@@ -164,9 +191,16 @@ class UserController {
           name: `${get(userDataFromFacebook, 'first_name')} ${get(userDataFromFacebook, 'last_name')}`,
           password: await generatePasswordHash(get(userDataFromFacebook, 'userMetadata.sources[0].id')),
         };
-        const createUserFromFacebookData = await UserService.createUser(newUser);
-        console.info('createUserFromFacebookData!!!', createUserFromFacebookData);
-        util.setSuccess(200, 'User found!', createUserFromFacebookData);
+        const createUserData = await UserService.createUser(newUser);
+        console.info('createUserFromFacebookData!!!', createUserData);
+        util.setSuccess(
+          200,
+          'User created!',
+          {
+            userData: createUserData,
+            isRegistration: true,
+          }
+        );
       } else {
         util.setError(404, 'User not authorize!');
       }
