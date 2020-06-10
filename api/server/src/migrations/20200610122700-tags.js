@@ -1,18 +1,18 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.addColumn(
-      'Answers',
-      'answerTime',
+      'Tags',
+      'description',
       {
-        type: Sequelize.FLOAT,
+        type: Sequelize.STRING,
       }
     )
   },
 
   down: (queryInterface) => {
     return queryInterface.removeColumn(
-      'Answers',
-      'answerTime'
+      'Tags',
+      'description'
     );
   }
 };

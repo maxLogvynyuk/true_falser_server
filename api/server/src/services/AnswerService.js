@@ -36,7 +36,7 @@ class AnswerService {
     const previousAnswerInTest = await database.Answer.findAll({
       where: {TestId: Number(id)},
       order: [
-        ['timeSpend', 'DESC'],
+        ['createdAt', 'DESC'],
       ],
       limit: 1
     });
@@ -44,23 +44,23 @@ class AnswerService {
     if (isEmpty(previousAnswerInTest)) {
       const answerTest = await TestService.getATest(id);
       const currentAnswerTime = Number(
-        Date.parse(`${new Date}`) - Date.parse(get(answerTest, 'startTime'))
+        Date.now() - Date.parse(get(answerTest, 'startTime'))
       ) / 1000;
       console.info('currentAnswerTimeValue111', Date.parse(get(answerTest, 'startTime')));
       return currentAnswerTime;
     }
     const previousAnswerTimeInSecond = Date.parse(
-      get(previousAnswerInTest, '[0].timeSpend')
+      get(previousAnswerInTest, '[0].createdAt')
     );
     const currentAnswerTimeValue = Number(
-      Date.parse(`${new Date}`) - previousAnswerTimeInSecond
+      Date.now() - previousAnswerTimeInSecond
     ) / 1000;
     console.info(
       'currentAnswerTimeValue2222!!!',
       currentAnswerTimeValue,
       previousAnswerTimeInSecond,
       Date.parse(
-        get(previousAnswerInTest, '[0].timeSpend')
+        get(previousAnswerInTest, '[0].createdAt')
       ),
      );
     return currentAnswerTimeValue;

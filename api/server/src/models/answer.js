@@ -6,7 +6,6 @@ module.exports = (sequelize, DataTypes) => {
     QuestionId: DataTypes.NUMBER,
     answer: DataTypes.BOOLEAN,
     userAnswer: DataTypes.BOOLEAN,
-    timeSpend: DataTypes.STRING,
     answerTime: DataTypes.INTEGER,
   }, {});
   Answer.associate = function createAnswerAssociation(models) {
