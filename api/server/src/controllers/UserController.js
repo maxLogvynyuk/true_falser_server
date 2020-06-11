@@ -14,7 +14,6 @@ const util = new Util();
 class UserController {
 
   static async createUser(request, response) {
-    console.info('Registration data', request.body, request.headers);
     if (
       !request.body.name ||
       !request.body.login ||
@@ -58,14 +57,12 @@ class UserController {
 
     try {
       const user = await UserService.getUserByLogin(postData.login);
-      // console.info('Login user', user);
       if (!user) {
         return response.status(404).json({
           message: 'User not found'
         });
       }
       if (postData.password === decryptPasswordHash(user.password)) {
-        // console.info('Compere password!!!', postData.password, decryptPasswordHash(user.password));
         util.setSuccess(200, 'Login success!', user);
         console.info('Login res on server success' );
         return  util.send(response);
@@ -90,7 +87,6 @@ class UserController {
 
       return util.send(response);
     } catch (error) {
-      console.info('error authorizationWithGoogle!!!', error);
       util.setError(500, error);
       return util.send(response);
     }
@@ -98,7 +94,6 @@ class UserController {
 
   static async authorizationWithGoogleCode(request, response) {
     const { code } = request.query;
-    console.info('code!!!', code);
     if (isEmpty(code)) {
       util.setError(400, 'Please provide code');
       return util.send(response);
@@ -126,7 +121,6 @@ class UserController {
           password: await generatePasswordHash(get(userDataFromGoogle, 'userMetadata.sources[0].id')),
         };
         const createUserData = await UserService.createUser(newUser);
-        console.info('createUserFromGoogleData!!!', createUserData);
         util.setSuccess(
           200,
           'User created!',
@@ -139,7 +133,6 @@ class UserController {
       }
       return util.send(response);
     } catch (error) {
-      console.info('authorizationWithGoogleCode ERROR!', error);
       util.setError(500, error);
       return util.send(response);
     }
@@ -164,7 +157,6 @@ class UserController {
 
   static async authorizationWithFacebookCode(request, response) {
     const { code } = request.query;
-    console.info('code!!!', code);
     if (isEmpty(code)) {
       util.setError(400, 'Please provide code');
       return util.send(response);
@@ -172,7 +164,6 @@ class UserController {
 
     try {
       const userDataFromFacebook = await getAccessTokenAndFacebookUserData(code);
-      console.info('userDataFromFacebook!!!', userDataFromFacebook);
 
       if (!isEmpty(userDataFromFacebook)) {
         const checkIfUserExist = await UserService.getUserByLogin(userDataFromFacebook.email);
@@ -192,7 +183,6 @@ class UserController {
           password: await generatePasswordHash(get(userDataFromFacebook, 'userMetadata.sources[0].id')),
         };
         const createUserData = await UserService.createUser(newUser);
-        console.info('createUserFromFacebookData!!!', createUserData);
         util.setSuccess(
           200,
           'User created!',
@@ -206,7 +196,6 @@ class UserController {
       }
       return util.send(response);
     } catch (error) {
-      console.info('authorizationWithFacebookCode ERROR!', error);
       util.setError(500, error);
       return util.send(response);
     }

@@ -10,7 +10,6 @@ const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
 class TagService {
   static async getAllTagsId() {
-    console.info('getAllTagsId!!!!');
     const allTagsId = database.Tag.findAll({
       attributes: {
         exclude: ["name", "createdAt", "updatedAt"]
@@ -37,12 +36,7 @@ class TagService {
         type: QueryTypes.SELECT
       }
     );
-    // const tag = await database.Tag.findOne({
-    //   where: {id: Number(id)}
-    // });
     return {
-      // TagId: id,
-      // name: get(tag, 'name'),
       totalAnswers: get(totalAnswers, '[0].count'),
       correctAnswers: get(correctAnswers, '[0].count'),
     };
@@ -70,10 +64,6 @@ class TagService {
     const averageTimeOfCorrectAnswersArray = map(correctAnswers, answer => {
       return Number(get(answer, 'answerTime'))
     });
-    // const averageTimeOfCorrectAnswers = _reduce(averageTimeOfCorrectAnswersArray, function(sum, n) {
-    //   console.info('In reduce!!!S', sum, n);
-    //   return Number(sum) + Number(n);
-    //   }, 0);
     if (!isEmpty(averageTimeOfCorrectAnswersArray)) {
       const averageTimeOfCorrectAnswers = Math.round(
         // eslint-disable-next-line lodash/prefer-lodash-method
@@ -139,10 +129,6 @@ class TagService {
     const averageTimeOfIncorrectAnswersArray = map(incorrectAnswers, answer => {
       return Number(get(answer, 'answerTime'))
     });
-    // const averageTimeOfCurrentAnswers = _reduce(averageTimeOfCurrentAnswersArray, function(sum, n) {
-    //   console.info('In reduce!!!S', sum, n);
-    //   return Number(sum) + Number(n);
-    //   }, 0);
     if(
       !isEmpty(averageTimeOfIncorrectAnswersArray)
       && !isEmpty(averageTimeOfCorrectAnswersArray)
@@ -155,14 +141,6 @@ class TagService {
         // eslint-disable-next-line lodash/prefer-lodash-method
         averageTimeOfIncorrectAnswersArray.reduce(reducer)
         / averageTimeOfIncorrectAnswersArray.length;
-      // console.info(
-      //   'get Tags statistic in service!!',
-      //   // correctAnswers,
-      //   averageTimeOfIncorrectAnswersArray,
-      //   averageTimeOfIncorrectAnswers,
-      //   percentile95OfCorrect,
-      //   percentile95OfIncorrect,
-      // );
       return {
         TagId: id,
         name: get(tag, 'name'),

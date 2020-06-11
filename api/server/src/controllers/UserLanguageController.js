@@ -21,7 +21,6 @@ class UserLanguageController {
 
     try {
       const userLanguages = await UserLanguageService.setUserLanguages(userId, userLanguagesArray);
-      console.info('userLanguages after adding', userLanguages);
       if (userLanguages) {
         util.setSuccess(200, 'User languages wrote down successfully!', userLanguages)
       } else {
@@ -30,7 +29,6 @@ class UserLanguageController {
 
       return util.send(response);
     } catch (error) {
-      console.info('addUserLanguages!!!', error);
       util.setError(500, error);
       return util.send(response);
     }

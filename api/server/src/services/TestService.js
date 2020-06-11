@@ -55,12 +55,6 @@ class TestService {
       }
     });
 
-    console.info(
-      'testWithAnswers result!!!',
-      totalAnswersInTest,
-      correctAnswersInTest,
-      testWithAnswers
-    );
     return {
       totalAnswersInTest,
       correctAnswersInTest,

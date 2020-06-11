@@ -48,11 +48,6 @@ class LanguageService {
     const language = await database.Language.findOne({
       where: {id: Number(id)}
     });
-    console.info(
-      'getRatioOfCorrectAnswer!!',
-      totalAnswers,
-      correctAnswers
-    );
     return {
       LanguageId: id,
       name: get(language, 'name'),

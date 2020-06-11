@@ -53,7 +53,6 @@ class StatisticController {
 
     try {
       const allLanguagesStatistic = await LanguageService.getAllLanguagesCorrectAnswersStatistic();
-      console.info('allLanguagesStatistic!!!', allLanguagesStatistic);
       if (!allLanguagesStatistic) {
         util.setError(404, `Cannot generate list of correct answer statistic`);
       } else {

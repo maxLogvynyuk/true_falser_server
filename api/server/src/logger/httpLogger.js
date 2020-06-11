@@ -7,7 +7,7 @@ winstonLogger.stream = {
 };
 
 morgan.token('body', function writeLogs(request, response, error) {
-  console.info('Error', error);
+  console.info('Error in logger', error);
   if (response.statusCode > 201) {
     return JSON.stringify(response.body)
   }

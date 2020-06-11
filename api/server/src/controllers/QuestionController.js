@@ -36,13 +36,6 @@ class QuestionController {
         'userLanguages',
            ),
         parseInt);
-    // const userLanguagesId = queryString.parse(`userLanguages=${userLanguagesIdString}`, {arrayFormat: 'comma'});
-
-    console.info(
-      'excludedQuestions, and userLang1!!',
-      excludedQuestions,
-      userLanguagesId,
-      );
 
     if (!Number(id)) {
       util.setError(400, 'Please input a valid numeric value');
@@ -64,14 +57,12 @@ class QuestionController {
       }
       return util.send(response);
     } catch (error) {
-      console.info('error!!!', error);
       util.setError(500, error);
       return util.send(response);
     }
   };
 
   static async createQuestion(request, response) {
-    console.info('createQuestion!!!', request.body);
     if (
       !request.body.text ||
       !request.body.LanguageId ||
@@ -86,13 +77,11 @@ class QuestionController {
     try {
       const createdQuestion = await QuestionService.createQuestion(newQuestion);
       if (newQuestion) {
-        console.info('createdQuestion data!!!', createdQuestion);
         const newQuestionId = get(createdQuestion, 'id');
         const newQuestionTagsData = await QuestionTagService.createQuestionTags(
           newQuestionId,
           newQuestionTags,
         );
-        console.info('newQuestionTagsData!!!', newQuestionTagsData);
         if (newQuestionTagsData) {
           util.setSuccess(
             201,
@@ -109,14 +98,12 @@ class QuestionController {
       return util.send(response);
 
     } catch (error) {
-      console.info('error createdQuestion!!!', error);
       util.setError(500, error.message);
       return util.send(response);
     }
   };
 
   static async updateQuestion(request, response) {
-    console.info('updateQuestion!!!', request.body);
     const { id } = request.params;
     if (
       !request.body.text &&

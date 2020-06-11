@@ -14,18 +14,10 @@ class AnswerService {
 
   static async createAnswer(newAnswer) {
     const answerTest = await TestService.getATest(get(newAnswer, 'TestId'));
-    console.info('Create answer spendTime and startTime!!!',
-      new Date(),
-      answerTest.startTime,
-      (Date.parse(`${new Date()}`)),
-      (Date.parse(get(answerTest, 'startTime'))),
-      Number(process.env.TEST_TIME)
-    );
     const spendTime = `${new Date()}`;
     if (
       (Date.parse(spendTime) >=
       Date.parse(get(answerTest, 'startTime')) + Number(process.env.TEST_TIME))
-      // || Date.parse(newAnswer.timeSpend) < Date.parse(get(answerTest, 'startTime'))
     ) {
       return null
     }
@@ -40,13 +32,11 @@ class AnswerService {
       ],
       limit: 1
     });
-    console.info('currentAnswerTimeValue000!!!', previousAnswerInTest);
     if (isEmpty(previousAnswerInTest)) {
       const answerTest = await TestService.getATest(id);
       const currentAnswerTime = Number(
         Date.now() - Date.parse(get(answerTest, 'startTime'))
       ) / 1000;
-      console.info('currentAnswerTimeValue111', Date.parse(get(answerTest, 'startTime')));
       return currentAnswerTime;
     }
     const previousAnswerTimeInSecond = Date.parse(
@@ -55,14 +45,6 @@ class AnswerService {
     const currentAnswerTimeValue = Number(
       Date.now() - previousAnswerTimeInSecond
     ) / 1000;
-    console.info(
-      'currentAnswerTimeValue2222!!!',
-      currentAnswerTimeValue,
-      previousAnswerTimeInSecond,
-      Date.parse(
-        get(previousAnswerInTest, '[0].createdAt')
-      ),
-     );
     return currentAnswerTimeValue;
   }
 

@@ -8,7 +8,6 @@ import database from '../models';
 class QuestionService {
 
   static async getLanguageQuestions(id, excludedQuestion, limit, userLanguagesId) {
-    console.info('excludedQuestion2!!!', excludedQuestion);
     if (Number(id) === Number(process.env.ALL_LANGUAGES_ID)) {
       const allLanguagesIdArray = await database.Language.findAll({
         attributes: {
@@ -19,7 +18,6 @@ class QuestionService {
         return get(language, 'id');
       });
       const languagesIdArray = isEmpty(userLanguagesId) ? allLanguagesId : userLanguagesId;
-      console.info('allLanguages!!!!', allLanguagesId, languagesIdArray);
       if (isEmpty(excludedQuestion)) {
         const languageQuestions = database.Question.findAll({
           where: {
@@ -57,7 +55,6 @@ class QuestionService {
         order: sequelize.literal('random()'),
         limit
       });
-      console.info('languageQuestions!!!', languageQuestions);
       return languageQuestions;
     }
     if (isEmpty(excludedQuestion)) {
@@ -89,13 +86,11 @@ class QuestionService {
       order: sequelize.literal('random()'),
       limit
     });
-    console.info('languageQuestions!!!', languageQuestions);
     return languageQuestions;
   }
 
   static async createQuestion(newQuestion) {
     const createdQuestion = await database.Question.create(newQuestion);
-    console.info('createdQuestion in service!!!!', createdQuestion);
     return createdQuestion;
   }
 

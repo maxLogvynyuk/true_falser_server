@@ -1,5 +1,4 @@
 import database from '../models';
-// import TestService from './TestService';
 
 class UserService {
 
@@ -33,17 +32,6 @@ class UserService {
     }
     return null;
   }
-
-
-  // static async getUserTests(id) {
-  //   const userTests = await TestService.getAllTests(id);
-  //   console.info('userTests!!!!', userTests);
-  //   if (userTests) {
-  //     return userTests;
-  //   }
-  //   return null;
-  // }
-
 
 }
 

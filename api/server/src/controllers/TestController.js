@@ -45,7 +45,6 @@ class TestController {
 
     try {
       const updatedTest = await TestService.updateTest(id, alteredTest);
-      console.info('updatedTest!!!', updatedTest);
       if (!isEmpty(updatedTest)) {
         util.setSuccess(200, 'Test updated!', updatedTest);
       } else {
@@ -92,7 +91,6 @@ class TestController {
       }
       return util.send(response);
     } catch (error) {
-      console.info('getTestWithAnswersResult!!!', error);
       util.setError(500, error);
       return util.send(response);
     }

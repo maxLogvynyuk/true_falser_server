@@ -19,8 +19,6 @@ function createConnection() {
 }
 
 const defaultScope = [
-  // 'https://www.googleapis.com/auth/plus.me',
-  // 'https://www.googleapis.com/auth/userinfo.email',
   'profile',
   'email',
 ];
@@ -36,9 +34,6 @@ function getConnectionUrl(auth) {
   });
 }
 
-// function getGooglePlusApi(auth) {
-//   return google.plus({ version: 'v1', auth });
-// }
 function getGooglePeopleApi(auth) {
   return google.people({ version: 'v1', auth });
 }
@@ -61,15 +56,10 @@ export async function getGoogleAccountFromCode(code) {
   const data = await auth.getToken(code);
   const tokens = data.tokens;
   auth.setCredentials(tokens);
-  // const plus = getGooglePlusApi(auth);
-  // const me = await plus.people.get({ userId: 'me' });
   const people = getGooglePeopleApi(auth);
-  console.info('getGooglePeopleApi', await people);
-  console.info('getGooglePeopleApi TOKENS!!', tokens);
   const me = await people.people.get({
     'resourceName': 'people/me',
     'requestMask.includeField': 'person.names,person.email_addresses,person.metadata,person.photos' });
-  console.info('getGoogleAccountFromCode!!', me);
   const userGoogleId = me.data.resourceName;
   const userNames = me.data.names;
   const userMetadata = me.data.metadata;
