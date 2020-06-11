@@ -49,7 +49,9 @@ class TestService {
     const correctAnswersInTest = await database.Answer.count({
       where: {
         TestId: Number(id),
-        [Op.and]: {answer: sequelize.col('userAnswer')}
+        userAnswer : {
+          [Op.eq]: sequelize.col('answer')
+        }
       }
     });
 
