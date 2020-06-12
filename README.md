@@ -21,34 +21,26 @@ This is a boilerplate application for building REST APIs in Node.js using ES6 an
     - fill in Data Protection Officer Contact Information and turn on your app.
 ```
 
-Deploy app on server and install dependencies:
+2.Deploy app on server and install dependencies:
 
 ```sh
-npm i nodemon -g
 npm i
 ```
 
-Set environment (vars):
+3.Set environment (vars):
 
 ```sh
 cp .env.example .env
 ```
 
-Start server:
-
-```sh
-# Start server
-npm run start
-```
-
-Install nodemon and sequelize-cli
+4.Install nodemon and sequelize-cli
 
 ```sh
 npm install -g nodemon
 npm install -g sequelize-cli
 ```
 
-Create database
+5.Create database
 
 ```sh
 sudo su postgres
@@ -58,14 +50,15 @@ CREATE DATABASE db_name
 
 ## Sequelize
 
-Migrate all migrations
+6.Migrate all migrations
 
 ```sh
 sequelize db:migrate
 ```
 
-Revert all migrations
+7.Start server:
 
 ```sh
-sequelize db:migrate:undo
+# Start server
+npm run start
 ```
