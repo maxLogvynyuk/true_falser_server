@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npm i nodemon -g",
     "dev": "npm run server",
     "start": "npm run server",
     "server": "nodemon --exec babel-node ./api/index.js",
@@ -72,6 +73,7 @@
     "eslint-plugin-unicorn": "~17.0.1",
     "husky": "~4.2.3",
     "lint-staged": "~10.0.8",
+    "nodemon": "~2.0.2",
     "nyc": "~15.0.0",
     "prettier": "~1.19.1"
   },

@@ -1,0 +1,63 @@
+version: '2'
+
+services:
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: true-falsr-server
+    container_name: true-falsr-server
+    restart: always
+    env_file: .env
+#    environment:
+#      - CLIENT_URL_GOOGLE=$CLIENT_URL_GOOGLE
+#      - CLIENT_URL_FACEBOOK=$CLIENT_URL_FACEBOOK
+#      - PORT=$PORT
+#      - NODE_ENV=$NODE_ENV
+#      - DATABASE_URL=$DATABASE_URL
+#      - DB_NAME=$DB_NAME
+#      - DB_USER=$DB_USER
+#      - DB_PASS=$DB_PASS
+#      - DB_PORT=$DB_PORT
+#      - DB_HOST=$DB_HOST
+#      - QUESTIONS_LIMIT=$QUESTIONS_LIMIT
+#      - TEST_TIME=$TEST_TIME
+#      - GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
+#      - GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
+#      - FACEBOOK_APP_ID=$FACEBOOK_APP_ID
+#      - FACEBOOK_APP_SECRET=$FACEBOOK_APP_SECRET
+#      - CRONE_TIME_VALUE=$CRONE_TIME_VALUE
+#      - CRONE_TIME_ZONE=$CRONE_TIME_ZONE
+#      - ALL_LANGUAGES_ID=$ALL_LANGUAGES_ID
+#      - JWT_MAX_AGE=$JWT_MAX_AGE
+#      - JWT_SECRET=$JWT_SECRET
+    ports:
+      - "80:8080"
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - app-network
+    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon ./api/index.js
+#    entrypoint: ["/app/api/index.js"]
+
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    env_file: .env
+#    environment:
+#      - DB_USER=$DB_USER
+#      - DB_PASS=$DB_PASS
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:
